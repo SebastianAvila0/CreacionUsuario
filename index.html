@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="../../public/icons/favicon.ico">
+  <link rel="stylesheet" type="text/css" href="../../public/css/estilos-base.css?time=202602111211">
+  <link rel="stylesheet" type="text/css" href="View/css/estilos.css?time=202602111211">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <title>Creacion Usuarios</title>
+</head>
+
+<body>
+  <nav class="box-flex barra-nav">
+    <div class="box-flex logo-contenido">
+      <div class="logo-nav">
+        <img src="../../public/img/logo-bsoft-azul.png" alt="logo B-Soft">
+      </div>
+      <div class="box-flex datos-usuario">
+        <p>Usuario B-SOFT:&nbsp;<span id="usuario-bsoft"></span></p>
+        <p id="cargo-bsoft"></p>
+      </div>
+    </div>
+    <div class="box-flex logo-contenido">
+      <button type="button" id="boton1" class="boton-general mostrar-element" vinculado="#modal-accion">Crear Usuario
+        <img src="../../public/icons/plus-white.svg" alt="accion" vinculado="#modal-accion">
+      </button>
+      <div class="box-flex logo-nav">
+        <img id="logo-empresa" src="" alt="Logo empresa">
+      </div>
+    </div>
+  </nav>
+
+  <div class="botones-reportes">
+    <button type="button" id="boton-manual">
+      <p>VER MANUAL</p><img src="../../public/icons/file-text-white.svg" alt="Manual">
+    </button>
+    <button type="button" id="boton-excel">EXCEL</button>
+    <button type="button" id="boton-pdf">PDF</button>
+  </div>
+
+  <header class="encabezado">
+    <h1>CREACIÓN DE USUARIOS</h1>
+  </header>
+
+  <main class="contenido">
+
+    <div class="box-flex filtro">
+      <div class="contenedor-inputs">
+
+        <div class="box-flex label-input">
+          <label for="Usuario">Usuario</label>
+          <input id="Usuario" class="campo" type="text" placeholder="Digite el usuario">
+        </div>
+
+        <div class="box-flex label-input">
+          <label for="Nombre">Nombre</label>
+          <input id="Nombre" class="campo" type="text" placeholder="Digite el nombre">
+        </div>
+
+        <div class="box-flex label-input">
+          <label for="Apellido">Apellido</label>
+          <input id="Apellido" class="campo" type="text" placeholder="Digite el apellido">
+        </div>
+
+        <div class="box-flex label-input">
+          <label for="Codigo">Codigo</label>
+          <input id="Codigo" class="campo" type="text" placeholder="Digite el codigo">
+        </div>
+
+        <div class="box-flex label-input">
+          <label for="Cedula">Cédula</label>
+          <input id="Cedula" class="campo" type="text" placeholder="Digite la cédula">
+        </div>
+
+        <div class="box-flex label-input">
+          <label for="Estado">Estado</label>
+          <select id="Estado" class="campo">
+            <option value="">Seleccione un tipo</option>
+            <option value="1">Activo</option>
+            <option value="2">Inactivo</option>
+          </select>
+        </div>
+
+        <div class="box-flex label-input">
+          <label for="Cargo">Cargo</label>
+          <select id="Cargo" class="campo">
+            <option value="">Seleccione un tipo</option>
+            <option value="1">Administrador</option>
+            <option value="2">Contador</option>
+            <option value="3">Desarrollador</option>
+            <option value="4">Recursos Humanos</option>
+            <option value="5">Auxiliar</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="box-flex botones-filtro">
+        <button class="boton-general">Consultar</button>
+        <button class="boton-general">Limpiar</button>
+      </div>
+    </div>
+
+    <div class="botones-acciones">
+      <button class="boton-general boton-accion">Accion 1</button>
+      <button class="boton-general boton-accion">Accion 2</button>
+    </div>
+
+    <div class="box-flex contenedor-tabla">
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Ejemplo 1</th>
+            <th>Ejemplo 2</th>
+            <th>Ejemplo 3</th>
+            <th>Ejemplo 4</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-contenido">
+          <tr>
+            <td><input type="radio" name="registro"></td>
+            <td>Ejemplo 1</td>
+            <td>Ejemplo 2</td>
+            <td>Ejemplo 3</td>
+            <td>Ejemplo 4</td>
+          </tr>
+          <tr>
+            <td><input type="radio" name="registro"></td>
+            <td>Ejemplo 1</td>
+            <td>Ejemplo 2</td>
+            <td>Ejemplo 3</td>
+            <td>Ejemplo 4</td>
+          </tr>
+          <tr>
+            <td><input type="radio" name="registro"></td>
+            <td>Ejemplo 1</td>
+            <td>Ejemplo 2</td>
+            <td>Ejemplo 3</td>
+            <td>Ejemplo 4</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <footer class="pie-pagina">
+    <p>Empresa:&nbsp;<span id="empresa"></span></p>
+  </footer>
+
+
+  <!-- <form id="CreateUser"> -->
+  <div id="modal-accion" class="box-flex modal">
+    <div class="box-flex modal-contenido">
+
+      <div class="modal-boton-cerrar">
+        <button class="boton-cerrar quitar-element" vinculado="#modal-accion">
+          <img src="../../public/icons/x-circle-red.svg" alt="Cerrar modal" vinculado="#modal-accion">
+        </button>
+      </div>
+      <form id="registrar-usuario" class="box-flex contenido-formulario">
+
+        <div id="contenido-formulario" class="box-flex contenido-formulario">
+          <h2 class="titulo-modal">Registrar Usuario</h2>
+          <div class="contenedor-inputs">
+            <div class="box-flex label-input">
+              <label>Código empleado</label>
+              <div class="box-flex contenedor-input-boton">
+                <input name="codigo_interno" type="number" class="campo" placeholder="Digite el campo">
+                <button type="button" class="boton-input mostrar-element" vinculado="#modal-consulta">
+                  <img src="../../public/icons/search-black.svg" alt="buscar" vinculado="#modal-consulta">
+                </button>
+              </div>
+            </div>
+
+            <div class="box-flex label-input">
+              <label for="nombres">Nombres</label>
+              <input name="nombres" id="nombres" class="campo" type="text" disabled>
+            </div>
+
+            <div class="box-flex label-input">
+              <label for="Apellidos">Apellidos</label>
+              <input name="Apellidos" id="Apellidos" class="campo" type="text" disabled>
+            </div>
+
+            <div class="box-flex label-input">
+              <label for="Cargo">Cargo</label>
+              <input name="nombre_cargo" id="nombre_cargo" class="campo" type="text" disabled>
+            </div>
+
+          </div>
+          <div class="botones-acciones">
+            <button type="button" id="enviar-formulario" class="boton-modal boton-general">Crear Usuario</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+  <div id="modal-consulta" class="box-flex modal">
+    <div class="box-flex modal-contenido">
+
+      <div class="modal-boton-cerrar">
+        <button class="boton-cerrar quitar-element" vinculado="#modal-consulta">
+          <img src="../../public/icons/x-circle-red.svg" alt="Cerrar modal" vinculado="#modal-consulta">
+        </button>
+      </div>
+      <form id="consultar-empleado" class="box-flex contenido-formulario">
+        <h2 class="titulo-modal">Consulta Empleados</h2>
+
+        <div class="box-flex filtro">
+          <div class="contenedor-inputs">
+
+            <div class="box-flex label-input">
+              <label for="codigo_interno">Código</label>
+              <input name="codigo_interno_cons" id="codigo_interno" type="text" class="campo consulta"
+                placeholder="ingrese el dato">
+            </div>
+
+            <div class="box-flex label-input">
+              <label for="cedula">Cedula</label>
+              <input name="cedula_cons" id="cedula" type="text" class="campo consulta" placeholder="ingrese el dato">
+            </div>
+
+            <div class="box-flex label-input">
+              <label for="nombres">Nombre</label>
+              <input name="nombres_cons" id="nombres" type="text" class="campo consulta" placeholder="ingrese el dato">
+            </div>
+
+            <div class="box-flex label-input">
+              <label for="apellidos">Apellido</label>
+              <input name="apellidos_cons" id="apellidos" type="text" class="campo consulta"
+                placeholder="ingrese el dato">
+            </div>
+
+          </div>
+        </div>
+
+        <div class="contenedor-tabla tabla-consultas">
+          <table class="tabla">
+            <thead>
+              <tr>
+                <th>Codigo</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Cargo</th>
+              </tr>
+            </thead>
+            <tbody id="datos-consulta">
+              <!-- <tr>
+                <td>Ejemplo 1</td>
+                <td>Ejemplo 2</td>
+                <td>Ejemplo 3</td>
+                <td>Ejemplo 4</td>
+              </tr>
+              <tr>
+                <td>Ejemplo 1</td>
+                <td>Ejemplo 2</td>
+                <td>Ejemplo 3</td>
+                <td>Ejemplo 4</td>
+              </tr>
+              <tr>
+                <td>Ejemplo 1</td>
+                <td>Ejemplo 2</td>
+                <td>Ejemplo 3</td>
+                <td>Ejemplo 4</td>
+              </tr> -->
+            </tbody>
+          </table>
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+  <script src="../../public/js/control-base-php.js?time=202602111211"></script>
+  <script src="View/js/control.js?time=202602111211"></script>
+  <script src="../../public/js/controlCreacionUsuarios.js?time=202603121944"></script>
+</body>
+
+</html>
