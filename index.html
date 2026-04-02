@@ -170,9 +170,12 @@
             <div class="box-flex label-input">
               <label>Código empleado</label>
               <div class="box-flex contenedor-input-boton">
-                <input name="codigo_interno" type="number" class="campo" placeholder="Digite el campo">
-                <button type="button" class="boton-input mostrar-element" vinculado="#modal-consulta">
-                  <img src="../../public/icons/search-black.svg" alt="buscar" vinculado="#modal-consulta">
+                <input name="codigo_interno" type="number" class="campo" vinculado="#registrar-usuario"
+                  placeholder="Digite el campo">
+                <button type="button" class="boton-input mostrar-element lupa" vinculado="#modal-consulta"
+                  referente="#registrar-usuario">
+                  <img src="../../public/icons/search-black.svg" alt="buscar" vinculado="#modal-consulta"
+                    referente="#registrar-usuario">
                 </button>
               </div>
             </div>
@@ -210,8 +213,8 @@
           <img src="../../public/icons/x-circle-red.svg" alt="Cerrar modal" vinculado="#modal-consulta">
         </button>
       </div>
+      <h2 class="titulo-modal">Consulta Empleados</h2>
       <form id="consultar-empleado" class="box-flex contenido-formulario">
-        <h2 class="titulo-modal">Consulta Empleados</h2>
 
         <div class="box-flex filtro">
           <div class="contenedor-inputs">
@@ -238,21 +241,25 @@
                 placeholder="ingrese el dato">
             </div>
 
+
+          </div>
+          <div class="box-flex botones-filtro">
+            <button class="boton-general" type="submit">Buscar</button>
           </div>
         </div>
-
-        <div class="contenedor-tabla tabla-consultas">
-          <table class="tabla">
-            <thead>
-              <tr>
-                <th>Codigo</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Cargo</th>
-              </tr>
-            </thead>
-            <tbody id="datos-consulta">
-              <!-- <tr>
+      </form>
+      <div class="contenedor-tabla tabla-consultas">
+        <table class="tabla">
+          <thead>
+            <tr>
+              <th>Codigo</th>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Cargo</th>
+            </tr>
+          </thead>
+          <tbody id="datos-consulta">
+            <!-- <tr>
                 <td>Ejemplo 1</td>
                 <td>Ejemplo 2</td>
                 <td>Ejemplo 3</td>
@@ -270,17 +277,16 @@
                 <td>Ejemplo 3</td>
                 <td>Ejemplo 4</td>
               </tr> -->
-            </tbody>
-          </table>
-        </div>
-      </form>
+          </tbody>
+        </table>
+      </div>
+
     </div>
 
   </div>
 
   <script src="../../public/js/control-base-php.js?time=202602111211"></script>
   <script src="View/js/control.js?time=202602111211"></script>
-  <script src="../../public/js/controlCreacionUsuarios.js?time=202603121944"></script>
 </body>
 
 </html>

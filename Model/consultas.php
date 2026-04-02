@@ -19,24 +19,6 @@ function arreglar_consulta($consulta)
   return $datos;
 }
 
-function arreglar_consulta1($consulta)
-{
-  $fila = [];
-  $datos = [];
-  while ($result = $consulta->fetchAll(PDO::FETCH_ASSOC)) {
-    foreach ($result as $clave => $valor) {
-      if (is_string($valor) && $valor) {
-        $fila[$clave] = iconv('ISO-8859-1', 'UTF-8', $valor);
-        $fila[$clave] = trim($fila[$clave], " ");
-      } else {
-        $fila[$clave] = $valor;
-      }
-    }
-    $datos[] = $fila;
-  }
-  return $datos;
-}
-
 class Consultas
 {
   private $conexion;
@@ -122,50 +104,87 @@ class Consultas
 
   public function consultar_empleado($codigo_interno)
   {
-    $script = "SELECT e.codigo_interno, e.nombres, e.apellidos, c.nombre_cargo
-      FROM empleados e
-      INNER JOIN cargos c ON e.codigo_cargo = c.codigo WHERE e.codigo_interno = :codigo_interno";
-    $consulta = $this->conexion->prepare($script);
-    if (!empty($codigo_interno)) {
-      $consulta->bindParam(':codigo_interno', $codigo_interno);
-    };
-    $consulta->execute();
-    $response = arreglar_consulta($consulta);
-    // return ['data' => $response];
-    return $response;
+    try {
+      $script = "SELECT e.codigo_interno, e.nombres, e.apellidos, c.nombre_cargo
+        FROM empleados e
+        INNER JOIN cargos c ON e.codigo_cargo = c.codigo WHERE e.codigo_interno = :codigo_interno";
+      $consulta = $this->conexion->prepare($script);
+      if (!empty($codigo_interno)) {
+        $consulta->bindParam(':codigo_interno', $codigo_interno);
+      };
+      $consulta->execute();
+      $response = arreglar_consulta($consulta);
+      return [
+        'status' => true,
+        'data' => $response
+      ];
+    } catch (Exception $error) {
+      return [
+        'status' => false,
+        'error' => 'Error al consultar empleado',
+        'mensaje' => $error->getMessage()
+      ];
+    }
   }
 
   public function consultar_empleado1($codigo_interno, $cedula, $nombres, $apellidos)
   {
-    $script = "SELECT e.codigo_interno, e.nombres, e.apellidos, c.nombre_cargo
+    try {
+      $parametros = '';
+      if (!empty($codigo_interno)) {
+        $parametros .= "AND e.codigo_interno LIKE :codigo_interno ";
+      }
+      if (!empty($cedula)) {
+        $parametros .= "AND e.cedula LIKE :cedula ";
+      }
+      if (!empty($nombres)) {
+        $parametros .= "AND LOWER(e.nombres) LIKE LOWER(:nombres) ";
+      }
+      if (!empty($apellidos)) {
+        $parametros .= "AND LOWER(e.apellidos) LIKE LOWER(:apellidos) ";
+      }
+      $script = "SELECT e.codigo_interno, e.nombres, e.apellidos, c.nombre_cargo
       FROM empleados e
-      INNER JOIN cargos c ON e.codigo_cargo = c.codigo WHERE 1=1 "
-      . (!$codigo_interno == "" ? "AND e.codigo_interno LIKE :codigo_interno " : "")
-      . (!$cedula == "" ? "AND e.cedula LIKE :cedula " : "")
-      . (!$nombres == "" ? "AND e.nombres LIKE :nombres " : "")
-      . (!$apellidos == "" ? "AND e.apellidos LIKE :apellidos " : "");
-    // echo 'console.log(' . json_encode($script) . $codigo_interno . $cedula . $nombres . $apellidos . ')';
-    $consulta = $this->conexion->prepare($script);
-    if (!empty($codigo_interno)) {
-      $like = "%" . $codigo_interno . "%";
-      $consulta->bindParam(':codigo_interno', $like);
+      INNER JOIN cargos c ON e.codigo_cargo = c.codigo WHERE 1=1 ";
+      $script .= $parametros;
+      $script .= "ORDER BY e.codigo_interno";
+
+      $consulta = $this->conexion->prepare($script);
+      if (!empty($codigo_interno)) {
+        $codigo_interno = "%" . $codigo_interno . "%";
+        $consulta->bindParam(':codigo_interno', $codigo_interno);
+        $parametros .= ' ' . $codigo_interno;
+      }
+      if (!empty($cedula)) {
+        $cedula = "%" . $cedula . "%";
+        $consulta->bindParam(':cedula', $cedula);
+        $parametros .= ' ' . $cedula;
+      }
+      if (!empty($nombres)) {
+        $nombres = "%" . $nombres . "%";
+        $consulta->bindParam(':nombres', $nombres);
+        $parametros .= ' ' . $nombres;
+      }
+      if (!empty($apellidos)) {
+        $apellidos = "%" . $apellidos . "%";
+        $consulta->bindParam(':apellidos', $apellidos);
+        $parametros .= ' ' . $apellidos;
+      }
+      $consulta->execute();
+      $response = arreglar_consulta($consulta);
+      return [
+        'status' => true,
+        'data' => $response,
+        'consulta' => $consulta,
+        'parametros' => $parametros
+      ];
+    } catch (Exception $error) {
+      return [
+        'status' => false,
+        'error' => 'Error al consultar empleados',
+        'mensaje' => $error->getMessage()
+      ];
     }
-    if (!empty($cedula)) {
-      $like = "%" . $cedula . "%";
-      $consulta->bindParam(':cedula', $like);
-    }
-    if (!empty($nombres)) {
-      $like = "%" . $nombres . "%";
-      $consulta->bindParam(':nombres', $like);
-    }
-    if (!empty($apellidos)) {
-      $like = "%" . $apellidos . "%";
-      $consulta->bindParam(':apellidos', $like);
-    }
-    $consulta->execute();
-    $response = arreglar_consulta1($consulta);
-    // return ['data' => $response];
-    return $response;
   }
 
   public function registrar_usuario($creador, $usuario, $codigo_interno)
